@@ -79,11 +79,21 @@ public class UIManager : MonoBehaviour
 
     private void MoveCrosshair() 
     {
+        
         Vector2 mousePos = mouseAction.ReadValue<Vector2>();
         Debug.Log("Mouse Position: " + mousePos);
 
-        Vector3 mouseWorldPos = Camera.main.ScreenToWorldPoint(new Vector3(mousePos.x, mousePos.y, Camera.main.nearClipPlane));
-        crosshair.position = new Vector3(mouseWorldPos.x, mouseWorldPos.y, crosshair.position.z);
+        
+        Vector2 uiPosition;
+        RectTransformUtility.ScreenPointToLocalPointInRectangle(
+            crosshair.parent.GetComponent<RectTransform>(),   
+            mousePos,                                         
+            Camera.main,                                      
+            out uiPosition                                    
+        );
+
+        
+        crosshair.localPosition = uiPosition;
     }
 
     private void SelectTarget()
